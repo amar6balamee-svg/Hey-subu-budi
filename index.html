@@ -1,102 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Hey Subu ❤️</title>
-
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
 <style>
 body {
-    margin:0;
-    padding:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: linear-gradient(135deg, #ff4e8a, #ff9ecf);
-    font-family: 'Pacifico', cursive;
-    overflow:hidden;
-    text-align:center;
-    color:white;
+  margin:0;
+  padding:0;
+  height:100vh;
+  overflow:hidden;
+  font-family: 'Pacifico', cursive;
+  text-align:center;
+  background: linear-gradient(135deg,#ff4e8a,#ff9ecf);
+  color:white;
 }
 
-.container {
-    z-index:2;
-}
-
-h1 {
-    font-size:50px;
-    animation: glow 1.5s infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 15px white; }
-    to { text-shadow: 0 0 30px pink; }
-}
+h1 { font-size:50px; animation: glow 1.5s infinite alternate;}
+h2 { font-size:28px; margin-bottom:20px;}
+@keyframes glow { from {text-shadow:0 0 15px white;} to {text-shadow:0 0 30px pink;} }
 
 button {
-    padding:12px 25px;
-    font-size:18px;
-    border:none;
-    border-radius:25px;
-    margin:10px;
-    cursor:pointer;
-    transition:0.3s;
+  padding:12px 25px; font-size:18px;
+  border:none; border-radius:25px; margin:10px; cursor:pointer;
+  transition:0.3s;
 }
+.yes { background:white; color:#ff4e8a; }
+.no { background:#ff1e56; color:white; position:absolute; }
 
-.yes {
-    background:white;
-    color:#ff4e8a;
-}
+button:hover { transform:scale(1.1); }
 
-.no {
-    background:#ff1e56;
-    color:white;
-    position:absolute;
-}
+#message { font-size:22px; margin-top:20px; line-height:1.4; }
 
-button:hover {
-    transform:scale(1.1);
-}
+.heart { position:absolute; color:white; animation: float 5s linear infinite; }
+@keyframes float { from {transform:translateY(100vh);opacity:1;} to {transform:translateY(-10vh);opacity:0;} }
 
-#message {
-    margin-top:20px;
-    font-size:24px;
-    line-height:1.4;
-}
+#ring { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(0); font-size:80px; color:gold; text-shadow:0 0 20px #fff; z-index:10; }
 
-/* Floating hearts */
-.heart {
-    position:absolute;
-    color:white;
-    animation: float 5s linear infinite;
-}
+#confetti { position:absolute; width:100%; height:100%; pointer-events:none; top:0; left:0; overflow:hidden; z-index:5; }
+.confetti-piece { position:absolute; width:10px; height:10px; background:gold; opacity:0.7; }
 
-@keyframes float {
-    from { transform: translateY(100vh); opacity:1; }
-    to { transform: translateY(-10vh); opacity:0; }
-}
+.photo { width:120px; height:120px; border-radius:15px; margin:10px; display:none; animation: fadein 2s forwards; }
+@keyframes fadein { from {opacity:0;} to {opacity:1;} }
 
-/* Ring popup */
-#ring {
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%) scale(0);
-    font-size:80px;
-    color:gold;
-    text-shadow: 0 0 20px #fff;
-    animation: ring-pop 1s forwards;
-    z-index:10;
-}
-
-@keyframes ring-pop {
-    0% { transform: translate(-50%, -50%) scale(0); opacity:0; }
-    50% { transform: translate(-50%, -50%) scale(1.2); opacity:1; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity:1; }
-}
+#typing { font-size:22px; margin-top:20px; min-height:60px; }
 </style>
 </head>
 
@@ -104,47 +52,82 @@ button:hover {
 
 <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" autoplay loop></audio>
 
-<div class="container">
-    <h1>Hey Subu ❤️</h1>
-    <h2>Will You Be Mine Forever?</h2>
+<h1>Hey Subu ❤️</h1>
+<h2>Will You Be Mine Forever?</h2>
 
-    <button class="yes" onclick="yesClick()">Yes 💕</button>
-    <button class="no" id="noBtn" onmouseover="moveButton()">No 😜</button>
+<button class="yes" onclick="yesClick()">Yes 💕</button>
+<button class="no" id="noBtn" onmouseover="moveButton()">No 😜</button>
 
-    <div id="message"></div>
-</div>
-
+<div id="message"></div>
+<div id="typing"></div>
 <div id="ring">💍</div>
+<div id="confetti"></div>
+
+<!-- Your Personal Photos -->
+<img src="https://i.postimg.cc/Bn5BBFcm/IMG-20250618-WA0118jpg-0-(1).jpg" class="photo" id="photo1">
+<img src="https://i.postimg.cc/Dmk1qfSH/IMG-20250618-WA0053jpg-0-(1).jpg" class="photo" id="photo2">
+<img src="https://i.postimg.cc/MTg9FSc3/IMG-20250618-WA0104jpg-0.jpg" class="photo" id="photo3">
 
 <script>
-function yesClick(){
-    document.getElementById("message").innerHTML =
-    "Yayyyy 😍 Subu said YES! ❤️<br>I Love You So Much 💖<br>Forever & Always!";
-    
-    // Show ring animation
-    document.getElementById("ring").style.display = "block";
-}
-
-function moveButton(){
-    var btn = document.getElementById("noBtn");
-    btn.style.top = Math.random() * 80 + "%";
-    btn.style.left = Math.random() * 80 + "%";
-}
-
-// Floating hearts generator
+// Heart generator
 setInterval(function(){
-    var heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = Math.random() * 20 + 15 + "px";
-    document.body.appendChild(heart);
+  let heart = document.createElement('div');
+  heart.className='heart'; heart.innerHTML='❤️';
+  heart.style.left=Math.random()*100+'vw';
+  heart.style.fontSize=Math.random()*20+15+'px';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),5000);
+},300);
 
-    setTimeout(function(){
-        heart.remove();
-    }, 5000);
-}, 300);
+// No button move
+function moveButton(){
+  let btn = document.getElementById('noBtn');
+  btn.style.top=Math.random()*80+'%';
+  btn.style.left=Math.random()*80+'%';
+}
+
+// Typing effect
+function typeMessage(msg,elementId,delay=50){
+  let i=0;
+  let el=document.getElementById(elementId);
+  el.innerHTML='';
+  let typer=setInterval(function(){
+    if(i<msg.length){ el.innerHTML += msg[i]; i++; } 
+    else { clearInterval(typer); }
+  },delay);
+}
+
+// Confetti
+function spawnConfetti(){
+  for(let i=0;i<100;i++){
+    let conf=document.createElement('div');
+    conf.className='confetti-piece';
+    conf.style.left=Math.random()*100+'vw';
+    conf.style.top=Math.random()*100+'vh';
+    conf.style.width=Math.random()*8+5+'px';
+    conf.style.height=Math.random()*8+5+'px';
+    document.getElementById('confetti').appendChild(conf);
+    setTimeout(()=>conf.remove(),3000);
+  }
+}
+
+// Yes click
+function yesClick(){
+  document.getElementById('message').innerHTML="Yayyyy 😍 Subu said YES! ❤️";
+  document.getElementById('ring').style.transform="translate(-50%,-50%) scale(1)";
+  spawnConfetti();
+
+  // Typing romantic message
+  let msg = "Subu ma timilai ekdam maya garxu vanna matra nasakeko ho timilai aajha vandha 3 year agadhi pako mailey aba juni vari samma mero vayera basa I love you so much mero budi 😚🫂❤️💋";
+  typeMessage(msg,'typing',50);
+
+  // Show photos
+  let photos=['photo1','photo2','photo3'];
+  photos.forEach((id,i)=>{
+    setTimeout(()=>document.getElementById(id).style.display='inline-block',i*800);
+  });
+}
 </script>
 
 </body>
-    </html>
+</html>
